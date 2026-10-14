@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Interactive Airfoil Aerodynamics Simulator</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Airfoil Aerodynamics Simulator</h1>
+        <p>Explore the relationship between airflow, lift, drag, and angle of attack.</p>
+    </header>
+
+    <main>
+
+        <section id="inputs">
+            <h2>Simulation Parameters</h2>
+
+            <label for="velocity">Air Velocity (m/s)</label>
+            <input type="number" id="velocity"
+                   min="1" max="150" value="30">
+
+            <label for="density">Air Density (kg/m³)</label>
+            <input type="number" id="density"
+                   min="0.1" max="2" step="0.01" value="1.225">
+
+            <label for="area">Wing Area (m²)</label>
+            <input type="number" id="area"
+                   min="0.1" max="500" step="0.1" value="20">
+
+            <label for="angle">Angle of Attack (degrees)</label>
+            <input type="range" id="angle"
+                   min="-5" max="15" value="5">
+
+            <p>Current Angle: <span id="angleValue">5</span>°</p>
+
+            <button id="resetButton" type="button">Reset Simulation</button>
+        </section>
+
+<section id="visualization">
+    <h2>Airfoil Visualization</h2>
+
+    <p>
+        Observe how the airfoil changes orientation
+        as the angle of attack changes.
+    </p>
+
+    <div id="airfoilDisplay">
+
+        <svg id="airfoilSVG"
+             viewBox="0 0 600 300"
+             role="img"
+             aria-label="Interactive airfoil showing airflow, lift, and drag">
+
+            <!-- Airflow arrows -->
+            <g id="airflowArrows"
+               stroke="#38bdf8"
+               stroke-width="2"
+               fill="none">
+
+                <path d="M 20 70 H 150" />
+                <path d="M 140 62 L 150 70 L 140 78" />
+
+                <path d="M 20 130 H 150" />
+                <path d="M 140 122 L 150 130 L 140 138" />
+
+                <path d="M 20 190 H 150" />
+                <path d="M 140 182 L 150 190 L 140 198" />
+
+                <path d="M 20 250 H 150" />
+                <path d="M 140 242 L 150 250 L 140 258" />
+
+            </g>
+
+            <!-- Airfoil rotates when angle changes -->
+            <g id="airfoilGroup">
+
+                <path id="airfoilShape"
+                      d="M 150 150
+                         Q 220 105 300 125
+                         Q 400 140 500 150
+                         Q 400 160 300 165
+                         Q 220 175 150 150 Z"
+                      fill="#94a3b8"
+                      stroke="#e2e8f0"
+                      stroke-width="2" />
+
+                <!-- Chord line -->
+                <line x1="150" y1="150"
+                      x2="500" y2="150"
+                      stroke="#facc15"
+                      stroke-dasharray="6 5"
+                      stroke-width="2" />
+
+            </g>
+
+            <!-- Lift arrow -->
+            <g id="liftArrow"
+               stroke="#4ade80"
+               stroke-width="4"
+               fill="none">
+
+                <line x1="325" y1="145"
+                      x2="325" y2="70" />
+
+                <path d="M 315 82 L 325 70 L 335 82" />
+
+            </g>
+
+            <!-- Drag arrow -->
+            <g id="dragArrow"
+               stroke="#fb923c"
+               stroke-width="4"
+               fill="none">
+
+                <line x1="325" y1="145"
+                      x2="410" y2="145" />
+
+                <path d="M 398 135 L 410 145 L 398 155" />
+
+            </g>
+
+            <text x="340" y="65" fill="#4ade80"
+                  font-size="15">Lift</text>
+
+            <text x="420" y="150" fill="#fb923c"
+                  font-size="15">Drag</text>
+
+            <text x="150" y="285" fill="#facc15"
+                  font-size="15">Chord line</text>
+
+        </svg>
+
+    </div>
+
+    <p>
+        Angle of Attack:
+        <strong><span id="visualAngle">5</span>°</strong>
+    </p>
+
+    <p class="visual-note">
+        Diagram is schematic and not to scale.
+        Arrows illustrate the concepts, not computed airflow.
+    </p>
+
+</section>
+
+        <section id="results">
+            <h2>Aerodynamic Results</h2>
+
+            <p>Lift: <span id="lift">--</span> N</p>
+            <p>Drag: <span id="drag">--</span> N</p>
+            <p>Lift-to-Drag Ratio: <span id="ratio">--</span></p>
+        </section>
+
+        
+<section id="graphs">
+    <h2>Performance Graphs</h2>
+
+    <p class="graph-description">
+        Explore how angle of attack affects the aerodynamic
+        performance of the modeled airfoil.
+    </p>
+
+    <div class="graph-container">
+        <h3>Lift vs. Angle of Attack</h3>
+        <canvas id="liftGraph" width="1200" height="600"></canvas>
+    </div>
+
+    <div class="graph-container">
+        <h3>Drag vs. Angle of Attack</h3>
+        <canvas id="dragGraph" width="1200" height="600"></canvas>
+    </div>
+
+    <div class="graph-container">
+        <h3>Lift-to-Drag Ratio vs. Angle of Attack</h3>
+        <canvas id="ratioGraph" width="1200" height="600"></canvas>
+    </div>
+</section>
+
+
+
+        <section id="explanation">
+            <h2>Understand the Results</h2>
+            <p id="explanationText">
+                Change the simulation parameters to explore aerodynamic forces.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Educational aerospace engineering project</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
